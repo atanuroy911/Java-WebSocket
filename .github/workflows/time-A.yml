@@ -1,0 +1,26 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+name: optcd-time-A
+
+on:
+- workflow_dispatch
+
+jobs:
+  build:
+
+    runs-on:
+
+    - self-hosted
+    - optcd
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - name: 'mvn: go-offline (untimed)'
+      run: mvn -B -q dependency:go-offline || true
+    - name: 'mvn: Code Style Check'
+      run: mvn -B checkstyle:check --file pom.xml
